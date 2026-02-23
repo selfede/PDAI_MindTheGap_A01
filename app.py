@@ -60,20 +60,15 @@ with st.sidebar:
 
     if st.button("Upload files", type="primary"):
         if cv_file and transcript_file:
-            with st.spinner("Uploading documents..."):
-                        progress = st.progress(0, text="Reading CV...")
-                        cv_file.seek(0)
-                        st.session_state.cv_text = extract_text([cv_file])
-                        
-                        progress.progress(50, text="Reading transcript...")
-                        transcript_file.seek(0)
-                        st.session_state.transcript_text = extract_text([transcript_file])
-                        
-                        progress.progress(100, text="Done!")
-                        if st.session_state.cv_text and st.session_state.transcript_text:
-                            st.success("Academic profile updated")
-                        else:
-                            st.warning("It was not possible to read one or more files. Please double check and try again.")
+            with st.spinner("Uploading documents"):
+                cv_file.seek(0)
+                transcript_file.seek(0)
+                st.session_state.cv_text = extract_text([cv_file])  #saving exytracted text to session state
+                st.session_state.transcript_text = extract_text([transcript_file])
+                if st.session_state.cv_text and st.session_state.transcript_text:
+                    st.success("Academic profile updated")
+                else:
+                    st.warning("It was not possible to read one or more files. Please double check and try again.")
         else:
             st.error("Please check that both CV and uni transcript are selected.")
 
