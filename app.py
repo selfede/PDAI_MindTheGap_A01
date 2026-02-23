@@ -92,6 +92,7 @@ with tab1:
     if st.button("Retrieve application information") and new_jds:
         with st.spinner("AI is reading the job descriptions. Please hold..."):
             new_rows = []
+            new_jd_texts = []
             for jd_file in new_jds:
                 jd_text = extract_text(jd_file)
 
@@ -110,14 +111,17 @@ with tab1:
                             "Industry": data.get("industry", "Unknown"),
                             "Role": data.get("role", "Unknown"),
                             "Status": "Not Applied"}) #setting this as default but user will be able to edit later
-                        future_idx = len(st.session_state.app_df) + len(new_rows) - 1  #storing jds separately by row so they can individually accessible (useful for gap analysis so user doesns't have to reupload)
-                        st.session_state.jd_texts[future_idx] = jd_text
+                        new_jd_texts.append(jd_text)
 
                 except Exception as e:
                     st.warning(f"Could not parse {jd_file.name}: {e}")  #error handling
 
-            if new_rows:   #if new rows are added manually the tab is updated
+            if new_rows:
+                start_idx = len(st.session_state.app_df)
                 st.session_state.app_df = pd.concat([st.session_state.app_df, pd.DataFrame(new_rows)], ignore_index=True)
+
+                for i, jd_text in enumerate(new_jd_texts):
+                    st.session_state.jd_texts[start_idx + i] = jd_text
                 st.success(f"Added {len(new_rows)} applications.")
 
     st.divider()
