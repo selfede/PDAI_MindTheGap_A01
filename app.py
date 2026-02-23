@@ -97,7 +97,7 @@ with tab1:
                 jd_text = extract_text(jd_file)
 
                 #first prompt to ai to extract the info in json format, structuring it as done in the ai for productivity skill seminar
-                parse_prompt = f"Identify company, industry (1 word only, make sure if already mentioned to use the same terminology), and role. Return ONLY JSON: {{\"company\": \"...\", \"industry\": \"...\", \"role\": \"...\"}} for: {jd_text[:1000]}"
+                parse_prompt = f"Identify company, industry (1 word only, not shortenings, make sure to use consistent terminology for companies from the same industry), and role. Return ONLY JSON: {{\"company\": \"...\", \"industry\": \"...\", \"role\": \"...\"}} for: {jd_text[:1000]}"
                 try:
                     resp = requests.post(GROQ_URL, headers={"Authorization": f"Bearer {GROQ_API_KEY}"},
                         json={"model": "openai/gpt-oss-safeguard-20b",
@@ -173,7 +173,7 @@ with tab2:
         #experimenting with tags to show different industry distribution of applications
         st.subheader("Industry distribution")
         
-        all_companies = sorted(st.session_state.app_df['Industry'].unique())
+        all_companies = sorted(st.session_state.app_df['Industry'].unique())  #sometimes if the ai produces different names for the same industry it creates duplicates. will be imporved in next iterations
         selected_companies = st.multiselect("Select industries to compare:", 
             options=all_companies,
             default=all_companies[:3] if len(all_companies) > 3 else all_companies,)
