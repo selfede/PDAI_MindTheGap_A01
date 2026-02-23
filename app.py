@@ -86,7 +86,8 @@ tab1, tab2, tab3 = st.tabs(["Applications tracking", "Analytics", "Learning path
 #we call the ai to extract company, industry + role from the jd and populate the table automatically
 with tab1:
     st.subheader("Add new applications")
-    new_jds = st.file_uploader("Drop job description (PDFs) here", type="pdf", accept_multiple_files=True, key="bulk_uploader")
+    #the user should wait a few secs to ensure the files are uploaded, otherwise the parsing will skip the file. can be imporved in next iterations
+    new_jds = st.file_uploader("Drop job description (PDFs) here. Please wait a few seconds to ensure a successful upload.", type="pdf", accept_multiple_files=True, key="bulk_uploader")
 
     if st.button("Retrieve application information") and new_jds:
         with st.spinner("AI is reading the job descriptions. Please hold..."):
