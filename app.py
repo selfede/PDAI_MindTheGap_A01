@@ -212,7 +212,7 @@ with tab3:
 
         if st.button("Generate gap analysis", type="primary"):
             if not st.session_state.cv_text or not st.session_state.transcript_text:
-                st.warning("Please upload and process your CV and uni transcript in the sidebar first.")
+                st.warning("Please upload and process your CV and uni transcript in the sidebar first. Ensure you clicked the button.")
             elif not jd_text:
                 st.warning("No job description available for this application.")
             else:
